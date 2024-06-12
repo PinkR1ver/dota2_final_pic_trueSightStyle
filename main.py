@@ -1,7 +1,8 @@
 from PIL import Image, ImageDraw, ImageFont
 import streamlit as st
 from utils import *
-
+import numpy as np
+from io import BytesIO
 
 if __name__ == '__main__':
     
@@ -177,4 +178,9 @@ if __name__ == '__main__':
     
     st.image(canva)
     
+    buf = BytesIO()
+    canva.save(buf, format='png')
+    byte_im = buf.getvalue()
+    
+    st.download_button('Download Image', byte_im, file_name='final_graph.png', mime='image/png')
         
