@@ -25,7 +25,7 @@ if __name__ == '__main__':
         bo5_font_size = st.slider('BO5 Font Size', min_value=5, max_value=200, value=50, step=1)
         
         bo5_font_x_offset = st.slider('BO5 Font X Offset', min_value=-400, max_value=400, value=0, step=1)
-        bo5_font_y_offset = st.slider('BO5 Font Y Offset', min_value=-400, max_value=400, value=50, step=1) 
+        bo5_font_y_offset = st.slider('BO5 Font Y Offset', min_value=-400, max_value=400, value=100, step=1) 
         
         left_team_logo_width = st.slider('Left Team Logo Width', min_value=50, max_value=500, value=300, step=1)
         left_team_logo_x_offset = st.slider('Left Team Logo X Offset', min_value=-800, max_value=800, value=-400, step=1)
