@@ -1,8 +1,7 @@
 from PIL import Image
 
 
-def logo_style_transform_white(image_path, logo_width):
-    image = Image.open(image_path)
+def logo_style_transform_white(image, logo_width):
     image = image.convert('RGBA')
     image_width, image_height = image.size
     logo_height = image_height * logo_width // image_width
@@ -16,12 +15,4 @@ def logo_style_transform_white(image_path, logo_width):
                 pixels[i, j] = (255, 255, 255, 255)
                 
     return image
-
-
-if __name__ == '__main__':
-   
-    image_path = './azure_ray.png'
-    
-    image = logo_style_transform_white(image_path, 800)
-    image.save('./azure_ray_white.png')
     
