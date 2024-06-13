@@ -19,53 +19,103 @@ if __name__ == '__main__':
         font_style = st.selectbox('Font Style', [
             'Arial Bold', 'Calibri Bold', 'Bahnschrift',
             'GrotesqueMTStd Bold',
-        ])
+        ], index=3)
+        
+        background_image = st.selectbox('Background Image', [
+            '1', '2', '3'
+        ], index=0)
         
         left_team_logo = st.selectbox('Left Team Logo', [
-            'Team Spirit', 'Xtreme Gaming'
+            'Team Spirit', 'Xtreme Gaming', 'Azure Ray',
+            'Team Falcons', 'BetBoom'
         ], index=0)
         
         right_team_logo = st.selectbox('Right Team Logo', [
-            'Team Spirit', 'Xtreme Gaming'
+            'Team Spirit', 'Xtreme Gaming', 'Azure Ray', 
+            'Team Falcons', 'BetBoom'
         ], index=1)
+        
         
         match left_team_logo:
             case 'Team Spirit':
                 left_team_logo_path = './pic/team_spirit.png'
                 left_team_logo_x_offset_init = -400
-                left_team_logo_y_offset_init = -50
+                left_team_logo_y_offset_init = 0
+                left_team_logo_size_init = 350
             case 'Xtreme Gaming':
                 left_team_logo_path = './pic/xtreme_gaming.png'
                 left_team_logo_x_offset_init = -400
                 left_team_logo_y_offset_init = 0
+                left_team_logo_size_init = 350
+            case 'Azure Ray':
+                left_team_logo_path = './pic/azure_ray.png'
+                left_team_logo_x_offset_init = -400
+                left_team_logo_y_offset_init = 0
+                left_team_logo_size_init = 300
+            case 'Team Falcons':
+                left_team_logo_path = './pic/team_falcons.png'
+                left_team_logo_x_offset_init = -600
+                left_team_logo_y_offset_init = 0
+                left_team_logo_size_init = 300
+            case 'BetBoom':
+                left_team_logo_path = './pic/bb.png'
+                left_team_logo_x_offset_init = -500
+                left_team_logo_y_offset_init = 0
+                left_team_logo_size_init = 200
                 
         match right_team_logo:
             case 'Team Spirit':
                 right_team_logo_path = './pic/team_spirit.png'
                 right_team_logo_x_offset_init = 400
-                right_team_logo_y_offset_init = -50
+                right_team_logo_y_offset_init = 0
+                right_team_logo_size_init = 350
             case 'Xtreme Gaming':
                 right_team_logo_path = './pic/xtreme_gaming.png'
                 right_team_logo_x_offset_init = 400
                 right_team_logo_y_offset_init = 0
+                right_team_logo_size_init = 350
+            case 'Azure Ray':
+                right_team_logo_path = './pic/azure_ray.png'
+                right_team_logo_x_offset_init = 400
+                right_team_logo_y_offset_init = 50
+                right_team_logo_size_init = 300
+            case 'Team Falcons':
+                right_team_logo_path = './pic/team_falcons.png'
+                right_team_logo_x_offset_init = 600
+                right_team_logo_y_offset_init = 0
+                right_team_logo_size_init = 300
+            case 'BetBoom':
+                right_team_logo_path = './pic/bb.png'
+                right_team_logo_x_offset_init = 500
+                right_team_logo_y_offset_init = 0
+                right_team_logo_size_init = 200
+                
+        match background_image:
+            case '1':
+                background_image_path = './pic/background1.jpg'
+            case '2':
+                background_image_path = './pic/background2.jpg'
+            case '3':
+                background_image_path = './pic/background3.jpg'
+                
         
         with st.expander('Advanced Options'):
             
-            score_font_size = st.slider('Score Font Size', min_value=50, max_value=400, value=200, step=1)
+            score_font_size = st.slider('Score Font Size', min_value=1, max_value=400, value=200, step=1)
             
             score_font_x_offset = st.slider('Score Font X Offset', min_value=-400, max_value=400, value=0, step=1)
             score_font_y_offset = st.slider('Score Font Y Offset', min_value=-400, max_value=400, value=0, step=1)
 
-            bo5_font_size = st.slider('BO5 Font Size', min_value=5, max_value=200, value=50, step=1)
+            bo5_font_size = st.slider('BO5 Font Size', min_value=1, max_value=200, value=50, step=1)
             
             bo5_font_x_offset = st.slider('BO5 Font X Offset', min_value=-400, max_value=400, value=0, step=1)
             bo5_font_y_offset = st.slider('BO5 Font Y Offset', min_value=-400, max_value=400, value=100, step=1) 
             
-            left_team_logo_width = st.slider('Left Team Logo Width', min_value=50, max_value=500, value=300, step=1)
+            left_team_logo_size = st.slider('Left Team Logo Size', min_value=1, max_value=800, value=left_team_logo_size_init, step=1)
             left_team_logo_x_offset = st.slider('Left Team Logo X Offset', min_value=-800, max_value=800, value=left_team_logo_x_offset_init, step=1)
             left_team_logo_y_offset = st.slider('Left Team Logo Y Offset', min_value=-800, max_value=800, value=left_team_logo_y_offset_init, step=1)
             
-            right_team_logo_width = st.slider('Right Team Logo Width', min_value=50, max_value=500, value=300, step=1)
+            right_team_logo_size = st.slider('Right Team Logo Size', min_value=1, max_value=800, value=right_team_logo_size_init, step=1)
             right_team_logo_x_offset = st.slider('Right Team Logo X Offset', min_value=-800, max_value=800, value=right_team_logo_x_offset_init, step=1)
             right_team_logo_y_offset = st.slider('Right Team Logo Y Offset', min_value=-800, max_value=800, value=right_team_logo_y_offset_init, step=1)
     
@@ -90,11 +140,13 @@ if __name__ == '__main__':
             canva.paste(background_image, (0, 0))
         except Exception as e:
             st.error(e)
-            background_image = Image.open('./pic/background.jpg').convert('RGBA')
+            background_image = Image.open(background_image_path).convert('RGBA')
+            background_image = background_image.resize((width, height))
             canva.paste(background_image, (0, 0))
             
     else:
-        background_image = Image.open('./pic/background.jpg').convert('RGBA')
+        background_image = Image.open(background_image_path).convert('RGBA')
+        background_image = background_image.resize((width, height))
         canva.paste(background_image, (0, 0))
     
     canva_draw = ImageDraw.Draw(canva)
@@ -148,9 +200,9 @@ if __name__ == '__main__':
             try:
                 
                 left_team_logo = Image.open(uploaded_file_left_team_logo)
-                logo_width = left_team_logo_width
-                left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
-                logo_height, logo_width = left_team_logo.size
+                logo_height = left_team_logo_size
+                left_team_logo = logo_style_transform_white(left_team_logo, logo_height, mode=2)
+                logo_width, logo_height = left_team_logo.size
                 left_team_logo_center_x = logo_width // 2
                 left_team_logo_center_y = logo_height // 2
             
@@ -159,21 +211,22 @@ if __name__ == '__main__':
                 st.error(e)
                 
                 left_team_logo = Image.open(left_team_logo_path)
-                logo_width = left_team_logo_width
-                left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
-                logo_height, logo_width = left_team_logo.size
+                logo_height = left_team_logo_size
+                left_team_logo = logo_style_transform_white(left_team_logo, logo_height, mode=2)
+                logo_width, logo_height = left_team_logo.size
                 left_team_logo_center_x = logo_width // 2
                 left_team_logo_center_y = logo_height // 2
                 
     else:
         
         left_team_logo = Image.open(left_team_logo_path)
-        logo_width = left_team_logo_width
-        left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
-        logo_height, logo_width = left_team_logo.size
+        logo_height = left_team_logo_size
+        left_team_logo = logo_style_transform_white(left_team_logo, logo_height, mode=2)
+        logo_width, logo_height = left_team_logo.size
         left_team_logo_center_x = logo_width // 2
         left_team_logo_center_y = logo_height // 2
-        
+    
+    
     left_logo_position = (width // 2 - left_team_logo_center_x, height // 2 - left_team_logo_center_y)
     left_logo_position = (left_logo_position[0] + left_team_logo_x_offset, left_logo_position[1] + left_team_logo_y_offset)
     
@@ -185,9 +238,9 @@ if __name__ == '__main__':
         try:
             
             right_team_logo = Image.open(uploaded_file_right_team_logo)
-            logo_width = right_team_logo_width
-            right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
-            logo_height, logo_width = right_team_logo.size
+            logo_height = right_team_logo_size
+            right_team_logo = logo_style_transform_white(right_team_logo, logo_height, mode=2)
+            logo_width, logo_height= right_team_logo.size
             right_team_logo_center_x = logo_width // 2
             right_team_logo_center_y = logo_height // 2
             
@@ -196,18 +249,18 @@ if __name__ == '__main__':
             st.error(e)
             
             right_team_logo = Image.open(right_team_logo_path)
-            logo_width = right_team_logo_width
-            right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
-            logo_height, logo_width = right_team_logo.size
+            logo_height = right_team_logo_size
+            right_team_logo = logo_style_transform_white(right_team_logo, logo_height, mode=2)
+            logo_width, logo_height= right_team_logo.size
             right_team_logo_center_x = logo_width // 2
             right_team_logo_center_y = logo_height // 2
             
     else:
             
             right_team_logo = Image.open(right_team_logo_path)
-            logo_width = right_team_logo_width
-            right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
-            logo_height, logo_width = right_team_logo.size
+            logo_height = right_team_logo_size
+            right_team_logo = logo_style_transform_white(right_team_logo, logo_height, mode=2)
+            logo_width, logo_height = right_team_logo.size
             right_team_logo_center_x = logo_width // 2
             right_team_logo_center_y = logo_height // 2
             
