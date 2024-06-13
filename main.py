@@ -3,6 +3,7 @@ import streamlit as st
 from utils import *
 import numpy as np
 from io import BytesIO
+import time
 
 if __name__ == '__main__':
     
@@ -10,42 +11,81 @@ if __name__ == '__main__':
     
     with st.sidebar:
         
+        st.header('Image Detail Settings')
+        
         score_left = st.slider('Score Left', min_value=0, max_value=2, value=1, step=1)
         score_right = st.slider('Score Right', min_value=0, max_value=2, value=1, step=1)
-        score_font_size = st.slider('Score Font Size', min_value=50, max_value=400, value=200, step=1)
         
         font_style = st.selectbox('Font Style', [
             'Arial Bold', 'Calibri Bold', 'Bahnschrift',
             'GrotesqueMTStd Bold',
         ])
         
-        score_font_x_offset = st.slider('Score Font X Offset', min_value=-400, max_value=400, value=0, step=1)
-        score_font_y_offset = st.slider('Score Font Y Offset', min_value=-400, max_value=400, value=0, step=1)
-
-        bo5_font_size = st.slider('BO5 Font Size', min_value=5, max_value=200, value=50, step=1)
+        left_team_logo = st.selectbox('Left Team Logo', [
+            'Team Spirit', 'Xtreme Gaming'
+        ], index=0)
         
-        bo5_font_x_offset = st.slider('BO5 Font X Offset', min_value=-400, max_value=400, value=0, step=1)
-        bo5_font_y_offset = st.slider('BO5 Font Y Offset', min_value=-400, max_value=400, value=100, step=1) 
+        right_team_logo = st.selectbox('Right Team Logo', [
+            'Team Spirit', 'Xtreme Gaming'
+        ], index=1)
         
-        left_team_logo_width = st.slider('Left Team Logo Width', min_value=50, max_value=500, value=300, step=1)
-        left_team_logo_x_offset = st.slider('Left Team Logo X Offset', min_value=-800, max_value=800, value=-400, step=1)
-        left_team_logo_y_offset = st.slider('Left Team Logo Y Offset', min_value=-800, max_value=800, value=-50, step=1)
+        match left_team_logo:
+            case 'Team Spirit':
+                left_team_logo_path = './pic/team_spirit.png'
+                left_team_logo_x_offset_init = -400
+                left_team_logo_y_offset_init = -50
+            case 'Xtreme Gaming':
+                left_team_logo_path = './pic/xtreme_gaming.png'
+                left_team_logo_x_offset_init = -400
+                left_team_logo_y_offset_init = 0
+                
+        match right_team_logo:
+            case 'Team Spirit':
+                right_team_logo_path = './pic/team_spirit.png'
+                right_team_logo_x_offset_init = 400
+                right_team_logo_y_offset_init = -50
+            case 'Xtreme Gaming':
+                right_team_logo_path = './pic/xtreme_gaming.png'
+                right_team_logo_x_offset_init = 400
+                right_team_logo_y_offset_init = 0
         
-        right_team_logo_width = st.slider('Right Team Logo Width', min_value=50, max_value=500, value=300, step=1)
-        right_team_logo_x_offset = st.slider('Right Team Logo X Offset', min_value=-800, max_value=800, value=400, step=1)
-        right_team_logo_y_offset = st.slider('Right Team Logo Y Offset', min_value=-800, max_value=800, value=0, step=1)
-
+        with st.expander('Advanced Options'):
             
+            score_font_size = st.slider('Score Font Size', min_value=50, max_value=400, value=200, step=1)
+            
+            score_font_x_offset = st.slider('Score Font X Offset', min_value=-400, max_value=400, value=0, step=1)
+            score_font_y_offset = st.slider('Score Font Y Offset', min_value=-400, max_value=400, value=0, step=1)
+
+            bo5_font_size = st.slider('BO5 Font Size', min_value=5, max_value=200, value=50, step=1)
+            
+            bo5_font_x_offset = st.slider('BO5 Font X Offset', min_value=-400, max_value=400, value=0, step=1)
+            bo5_font_y_offset = st.slider('BO5 Font Y Offset', min_value=-400, max_value=400, value=100, step=1) 
+            
+            left_team_logo_width = st.slider('Left Team Logo Width', min_value=50, max_value=500, value=300, step=1)
+            left_team_logo_x_offset = st.slider('Left Team Logo X Offset', min_value=-800, max_value=800, value=left_team_logo_x_offset_init, step=1)
+            left_team_logo_y_offset = st.slider('Left Team Logo Y Offset', min_value=-800, max_value=800, value=left_team_logo_y_offset_init, step=1)
+            
+            right_team_logo_width = st.slider('Right Team Logo Width', min_value=50, max_value=500, value=300, step=1)
+            right_team_logo_x_offset = st.slider('Right Team Logo X Offset', min_value=-800, max_value=800, value=right_team_logo_x_offset_init, step=1)
+            right_team_logo_y_offset = st.slider('Right Team Logo Y Offset', min_value=-800, max_value=800, value=right_team_logo_y_offset_init, step=1)
+    
+    progress_text = "Job Starting..."
+    progress_bar = st.progress(0, text=progress_text)
         
     width, height = 3840, 1600
     canva = Image.new('RGB', (width, height), color='white') 
     
-    uploaded_file = st.file_uploader('Choose a background image', type=['jpg', 'jpeg', 'png'])
     
-    if uploaded_file is not None:
+    with st.expander('Image personalization'):
+        uploaded_file_background = st.file_uploader('Choose a background image', type=['jpg', 'jpeg', 'png'])
+        uploaded_file_left_team_logo = st.file_uploader('Choose a left team logo', type=['jpg', 'jpeg', 'png'])
+        uploaded_file_right_team_logo = st.file_uploader('Choose a right team logo', type=['jpg', 'jpeg', 'png'])
+    
+    
+    if uploaded_file_background is not None:
         
         try:
-            background_image = Image.open(uploaded_file).convert('RGBA')
+            background_image = Image.open(uploaded_file_background).convert('RGBA')
             background_image = background_image.resize((width, height))
             canva.paste(background_image, (0, 0))
         except Exception as e:
@@ -58,6 +98,7 @@ if __name__ == '__main__':
         canva.paste(background_image, (0, 0))
     
     canva_draw = ImageDraw.Draw(canva)
+    progress_bar.progress(10, text='Background Image Loaded...')
     
     match font_style:
         case 'Arial Bold':
@@ -88,6 +129,7 @@ if __name__ == '__main__':
     position = (position[0] + score_font_x_offset, position[1] + score_font_y_offset)
     
     canva_draw.text(position, text, font=font, fill='white')
+    progress_bar.progress(30, text='Score Text Loaded...')
     
     text = 'BO5'
     font = ImageFont.truetype(font_style, bo5_font_size)
@@ -99,14 +141,13 @@ if __name__ == '__main__':
     position = (position[0] + bo5_font_x_offset, position[1] + bo5_font_y_offset)
     
     canva_draw.text(position, text, font=font, fill='white')
+    progress_bar.progress(50, text='BO5 Text Loaded...')
     
-    uploaded_file = st.file_uploader('Choose a left team logo', type=['jpg', 'jpeg', 'png'])
-    
-    if uploaded_file is not None:
+    if uploaded_file_left_team_logo is not None:
             
             try:
                 
-                left_team_logo = Image.open(uploaded_file)
+                left_team_logo = Image.open(uploaded_file_left_team_logo)
                 logo_width = left_team_logo_width
                 left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
                 logo_height, logo_width = left_team_logo.size
@@ -117,7 +158,7 @@ if __name__ == '__main__':
                 
                 st.error(e)
                 
-                left_team_logo = Image.open('./pic/left_team_logo.png')
+                left_team_logo = Image.open(left_team_logo_path)
                 logo_width = left_team_logo_width
                 left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
                 logo_height, logo_width = left_team_logo.size
@@ -126,7 +167,7 @@ if __name__ == '__main__':
                 
     else:
         
-        left_team_logo = Image.open('./pic/left_team_logo.png')
+        left_team_logo = Image.open(left_team_logo_path)
         logo_width = left_team_logo_width
         left_team_logo = logo_style_transform_white(left_team_logo, logo_width)
         logo_height, logo_width = left_team_logo.size
@@ -137,14 +178,13 @@ if __name__ == '__main__':
     left_logo_position = (left_logo_position[0] + left_team_logo_x_offset, left_logo_position[1] + left_team_logo_y_offset)
     
     canva.paste(left_team_logo, left_logo_position, left_team_logo)
+    progress_bar.progress(70, text='Left Team Logo Loaded...')
     
-    uploaded_file = st.file_uploader('Choose a right team logo', type=['jpg', 'jpeg', 'png'])
-    
-    if uploaded_file is not None:
+    if uploaded_file_right_team_logo is not None:
         
         try:
             
-            right_team_logo = Image.open(uploaded_file)
+            right_team_logo = Image.open(uploaded_file_right_team_logo)
             logo_width = right_team_logo_width
             right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
             logo_height, logo_width = right_team_logo.size
@@ -155,7 +195,7 @@ if __name__ == '__main__':
             
             st.error(e)
             
-            right_team_logo = Image.open('./pic/right_team_logo.png')
+            right_team_logo = Image.open(right_team_logo_path)
             logo_width = right_team_logo_width
             right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
             logo_height, logo_width = right_team_logo.size
@@ -164,7 +204,7 @@ if __name__ == '__main__':
             
     else:
             
-            right_team_logo = Image.open('./pic/right_team_logo.png')
+            right_team_logo = Image.open(right_team_logo_path)
             logo_width = right_team_logo_width
             right_team_logo = logo_style_transform_white(right_team_logo, logo_width)
             logo_height, logo_width = right_team_logo.size
@@ -175,12 +215,16 @@ if __name__ == '__main__':
     right_logo_position = (right_logo_position[0] + right_team_logo_x_offset, right_logo_position[1] + right_team_logo_y_offset)
     
     canva.paste(right_team_logo, right_logo_position, right_team_logo)
+    progress_bar.progress(90, text='Right Team Logo Loaded...')
     
     st.image(canva)
+    progress_bar.progress(100, text='Final Graph Generated, Job Completed!')
     
     buf = BytesIO()
     canva.save(buf, format='png')
     byte_im = buf.getvalue()
     
     st.download_button('Download Image', byte_im, file_name='final_graph.png', mime='image/png')
+    
+    progress_bar.empty()
         
