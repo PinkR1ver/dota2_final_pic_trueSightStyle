@@ -205,6 +205,8 @@ if __name__ == '__main__':
                 logo_width, logo_height = left_team_logo.size
                 left_team_logo_center_x = logo_width // 2
                 left_team_logo_center_y = logo_height // 2
+                left_team_logo_x_offset = -logo_width - 50
+                left_team_logo_y_offset = 0
             
             except Exception as e:
                 
@@ -243,6 +245,8 @@ if __name__ == '__main__':
             logo_width, logo_height= right_team_logo.size
             right_team_logo_center_x = logo_width // 2
             right_team_logo_center_y = logo_height // 2
+            right_team_logo_x_offset = logo_width + 50
+            right_team_logo_y_offset = 0
             
         except Exception as e:
             
