@@ -302,7 +302,7 @@ if __name__ == '__main__':
             
             progress_bar.empty()
             
-    with st.container():
+    with st.empty():
         footer_info = [
             "❤️ Made by ",
             link("https://pinktalk.online", "JudeW"),
