@@ -35,10 +35,9 @@
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
-- [:notebook\_with\_decorative\_cover: Table of Contents](#notebook_with_decorative_cover-table-of-contents)
-  - [:star2: About the Project](#star2-about-the-project)
-    - [:camera: Screenshots](#camera-screenshots)
-  - [:rocket: Quick Start](#rocket-quick-start)
+- [:star2: About the Project](#star2-about-the-project)
+  - [:camera: Screenshots](#camera-screenshots)
+- [:rocket: Quick Start](#rocket-quick-start)
 
 <!-- About the Project -->
 ## :star2: About the Project
